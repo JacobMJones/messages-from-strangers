@@ -14,6 +14,7 @@ import LoginManagement from '../components/LoginManagement';
 const AccountPageBase = () => (
   <Fragment>
     <AuthUserContext.Consumer>
+
       {authUser => (
         <div>
           <h1>Account: {authUser.email}</h1>
@@ -22,6 +23,7 @@ const AccountPageBase = () => (
           <LoginManagement authUser={authUser} />
         </div>
       )}
+         
     </AuthUserContext.Consumer>
   </Fragment>
 );

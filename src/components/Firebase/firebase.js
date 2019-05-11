@@ -1,21 +1,18 @@
-
 const firebaseConfig = {
   apiKey: process.env.GATSBY_API_KEY,
-  authDomain:  process.env.AUTH_DOMAIN,
+  authDomain: process.env.AUTH_DOMAIN,
   databaseURL: process.env.DATABASE_URL,
   projectId: process.env.PROJECT_ID,
   storageBucket: process.env.STORAGE_BUCKET,
   messagingSenderId: process.env.MESSAGING_SENDER_ID,
-  appId: process.env.APP_ID
+  appId: process.env.APP_ID,
 };
 
 class Firebase {
   constructor(app) {
-
-
     if (!app.apps.length) {
       app.initializeApp(firebaseConfig);
-   }
+    }
     /* Helper */
 
     this.serverValue = app.database.ServerValue;
@@ -101,9 +98,50 @@ class Firebase {
 
   // *** Message API ***
 
+  incrementMessageCount = () => {
+    console.log('increment');
+
+    this.db
+      .ref('messages/messagesInfo')
+      .once('value')
+      .then(snapshot => {
+        let currentCount = snapshot.val().messagesCount;
+        this.db
+          .ref('messages/messagesInfo')
+          .update({ messagesCount: currentCount + 1 });
+      });
+  };
   message = uid => this.db.ref(`messages/${uid}`);
 
+  filteredMessages = (uid) =>
+    this.db
+      .ref('messages')
+      .orderByChild('userId')
+      .equalTo(uid);
+
   messages = () => this.db.ref('messages');
+
+ 
+
+  getAllMessages = () => this.db.ref('messages');
+
+  getRandomMessage = () => this.db.ref('messages').orderByChild('index').equalTo('2');
+  
+ 
+   
+    // this.db
+    // .ref('messages/messagesInfo')
+    // .once('value')
+    // .then(snapshot => {
+    //   let currentCount = snapshot.val().messagesCount;
+    //   this.db
+    //     .ref('messages/messagesInfo')
+    //     .update({ messagesCount: currentCount + 1 });
+    // });
+
+      
+  // getUserMessages = (uid)
+  // console.log('messagecount', messageCount);
 }
 
 let firebase;

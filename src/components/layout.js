@@ -19,6 +19,8 @@ class Layout extends Component {
 
       this.setState({ firebase });
     });
+  
+
   }
 
   render() {

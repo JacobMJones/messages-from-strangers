@@ -23,6 +23,7 @@ class Messages extends Component {
       this._initFirebase = true;
 
       this.onListenForMessages();
+    
     }
   };
 
@@ -36,10 +37,9 @@ class Messages extends Component {
 
   onListenForMessages = () => {
     this.setState({ loading: true });
-
     this.props.firebase
-      .messages()
-      .orderByChild('createdAt')
+      .filteredMessages(JSON.parse(localStorage.getItem("authUser")).uid)
+      // .orderByChild('createdAt')
       .limitToLast(this.state.limit)
       .on('value', snapshot => {
         const messageObject = snapshot.val();
@@ -68,15 +68,23 @@ class Messages extends Component {
     this.setState({ text: event.target.value });
   };
 
-  onCreateMessage = (event, authUser) => {
+  async onCreateMessage (event, authUser) {
+    let currentCount = await this.props.firebase.db
+      .ref('messages/messagesInfo')
+      .once('value')
+      .then(snapshot => {
+        return snapshot.val().messagesCount;
+      });
+
+
     this.props.firebase.messages().push({
+      index: currentCount + 1,
       text: this.state.text,
       userId: authUser.uid,
       createdAt: this.props.firebase.serverValue.TIMESTAMP,
     });
-
+    this.props.firebase.incrementMessageCount();
     this.setState({ text: '' });
-console.log('create message')
     event.preventDefault();
   };
 
@@ -93,6 +101,10 @@ console.log('create message')
   onRemoveMessage = uid => {
     this.props.firebase.message(uid).remove();
   };
+  
+  onGetRandomMessage = () => {
+    this.props.firebase.getRandomMessage();
+  }
 
   onNextPage = () => {
     this.setState(
