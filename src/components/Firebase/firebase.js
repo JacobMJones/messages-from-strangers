@@ -113,7 +113,17 @@ class Firebase {
   };
   message = uid => this.db.ref(`messages/${uid}`);
 
-  filteredMessages = (uid) =>
+  getMessageText = (uid, cb) => {
+    console.log('asdf')
+    this.db
+      .ref(`messages/${uid}`)
+      .once('value')
+      .then(snapshot => {
+        cb('randomMessageText', snapshot.val().text);
+      });
+  };
+  
+  filteredMessages = uid =>
     this.db
       .ref('messages')
       .orderByChild('userId')
@@ -121,27 +131,81 @@ class Firebase {
 
   messages = () => this.db.ref('messages');
 
- 
-
   getAllMessages = () => this.db.ref('messages');
 
-  getRandomMessage = () => this.db.ref('messages').orderByChild('index').equalTo('2');
-  
- 
-   
-    // this.db
-    // .ref('messages/messagesInfo')
-    // .once('value')
-    // .then(snapshot => {
-    //   let currentCount = snapshot.val().messagesCount;
-    //   this.db
-    //     .ref('messages/messagesInfo')
-    //     .update({ messagesCount: currentCount + 1 });
-    // });
+  async getRandomMessage(cb) {
+    let name;
+    this.db
+      .ref('messages')
+      .orderByChild('index')
+      .equalTo(2)
+      .once('value')
+      .then(snapshot => {
+        snapshot.forEach(function(data) {
+          cb(data.key);  
+        });
+      });
 
-      
-  // getUserMessages = (uid)
-  // console.log('messagecount', messageCount);
+    return name;
+  }
+
+  // this.db
+  // .ref('messages/messagesInfo')
+  // .once('value')
+  // .then(snapshot => {
+  //   let currentCount = snapshot.val().messagesCount;
+  //   this.db
+  //     .ref('messages/messagesInfo')
+  //     .update({ messagesCount: currentCount + 1 });
+  // });
+
+  // {
+
+  //   let message;
+
+  //   let name = this.db
+  //   .ref('messages')
+  //   .orderByChild('index')
+  //   .equalTo(2)
+  //   .on('value', function(snapshot) {
+  //     name  = snapshot.val();
+  //     snapshot.forEach(function(data) {
+  //       message = data.key
+  //     });
+  //   }}
+
+  // let name = this.db
+  // .ref('messages')
+  // .orderByChild('index')
+  // .equalTo(2)
+  // .on('value', function(snapshot) {
+  //   name  = snapshot.val();
+  //   snapshot.forEach(function(data) {
+  //     message = data.key
+  //   });
+  // }}
+  //   this.db
+  //     .ref('messages')
+  //     .orderByChild('index')
+  //     .equalTo(2)
+  //     .on('value', function(snapshot) {
+  //       console.log(snapshot.val());
+  //       snapshot.forEach(function(data) {
+  //         console.log('dassta', data.key, data.value);
+  //       });
+  //     });
+  // // this.db
+  // // .ref('messages/messagesInfo')
+  // // .once('value')
+  // // .then(snapshot => {
+  // //   let currentCount = snapshot.val().messagesCount;
+  // //   this.db
+  // //     .ref('messages/messagesInfo')
+  // //     .update({ messagesCount: currentCount + 1 });
+  // // });
+
+  // // getUserMessages = (uid)
+  // // console.log('messagecount', messageCount);
 }
 
 let firebase;
