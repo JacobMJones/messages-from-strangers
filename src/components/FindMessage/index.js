@@ -25,15 +25,6 @@ class FindMessage extends Component {
     this.firebaseInit();
   }
 
-  //   async onCreateMessage (event, authUser) {
-  //     let currentCount = await this.props.firebase.db
-  //       .ref('messages/messagesInfo')
-  //       .once('value')
-  //       .then(snapshot => {
-  //         return snapshot.val().messagesCount;
-  //       });
-  //     }
-
   updateState = (key, value) => {
     this.setState({ [key]: value }, () => {
       console.log(this.state, 'state');
@@ -41,7 +32,13 @@ class FindMessage extends Component {
   };
 
   async getRandomMessage() {
-    await this.props.firebase.getRandomMessage(value => {
+    let messageCount = await this.props.firebase.getMessageCount()
+   console.log('message count', messageCount)
+
+ 
+   
+
+    await this.props.firebase.getRandomMessage(messageCount,(value) => {
       this.props.firebase.getMessageText(value, this.updateState);
     });
   }
@@ -57,7 +54,7 @@ class FindMessage extends Component {
               }}
             >
               Find a Random Message
-             
+    
             </button>
             {this.state.randomMessageText}
           </div>

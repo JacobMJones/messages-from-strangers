@@ -98,7 +98,16 @@ class Firebase {
 
   // *** Message API ***
 
-  incrementMessageCount = () => {
+  async getMessageCount() {
+    let num = await this.db
+      .ref('messages/messagesInfo')
+      .once('value')
+      .then(snapshot => {
+        return snapshot.val().messagesCount;
+      });
+      return num
+  }
+  incrementMessageCount = (num) => {
     console.log('increment');
 
     this.db
@@ -108,13 +117,12 @@ class Firebase {
         let currentCount = snapshot.val().messagesCount;
         this.db
           .ref('messages/messagesInfo')
-          .update({ messagesCount: currentCount + 1 });
+          .update({ messagesCount: currentCount + num });
       });
   };
   message = uid => this.db.ref(`messages/${uid}`);
 
   getMessageText = (uid, cb) => {
-    console.log('asdf')
     this.db
       .ref(`messages/${uid}`)
       .once('value')
@@ -122,7 +130,7 @@ class Firebase {
         cb('randomMessageText', snapshot.val().text);
       });
   };
-  
+
   filteredMessages = uid =>
     this.db
       .ref('messages')
@@ -133,79 +141,21 @@ class Firebase {
 
   getAllMessages = () => this.db.ref('messages');
 
-  async getRandomMessage(cb) {
+  async getRandomMessage(index, cb) {
     let name;
     this.db
       .ref('messages')
       .orderByChild('index')
-      .equalTo(2)
+      .equalTo(Math.floor((Math.random() * index) + 1))
       .once('value')
       .then(snapshot => {
         snapshot.forEach(function(data) {
-          cb(data.key);  
+          cb(data.key);
         });
       });
 
     return name;
   }
-
-  // this.db
-  // .ref('messages/messagesInfo')
-  // .once('value')
-  // .then(snapshot => {
-  //   let currentCount = snapshot.val().messagesCount;
-  //   this.db
-  //     .ref('messages/messagesInfo')
-  //     .update({ messagesCount: currentCount + 1 });
-  // });
-
-  // {
-
-  //   let message;
-
-  //   let name = this.db
-  //   .ref('messages')
-  //   .orderByChild('index')
-  //   .equalTo(2)
-  //   .on('value', function(snapshot) {
-  //     name  = snapshot.val();
-  //     snapshot.forEach(function(data) {
-  //       message = data.key
-  //     });
-  //   }}
-
-  // let name = this.db
-  // .ref('messages')
-  // .orderByChild('index')
-  // .equalTo(2)
-  // .on('value', function(snapshot) {
-  //   name  = snapshot.val();
-  //   snapshot.forEach(function(data) {
-  //     message = data.key
-  //   });
-  // }}
-  //   this.db
-  //     .ref('messages')
-  //     .orderByChild('index')
-  //     .equalTo(2)
-  //     .on('value', function(snapshot) {
-  //       console.log(snapshot.val());
-  //       snapshot.forEach(function(data) {
-  //         console.log('dassta', data.key, data.value);
-  //       });
-  //     });
-  // // this.db
-  // // .ref('messages/messagesInfo')
-  // // .once('value')
-  // // .then(snapshot => {
-  // //   let currentCount = snapshot.val().messagesCount;
-  // //   this.db
-  // //     .ref('messages/messagesInfo')
-  // //     .update({ messagesCount: currentCount + 1 });
-  // // });
-
-  // // getUserMessages = (uid)
-  // // console.log('messagecount', messageCount);
 }
 
 let firebase;

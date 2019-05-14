@@ -83,7 +83,7 @@ class Messages extends Component {
       userId: authUser.uid,
       createdAt: this.props.firebase.serverValue.TIMESTAMP,
     });
-    this.props.firebase.incrementMessageCount();
+    this.props.firebase.incrementMessageCount(+1);
     this.setState({ text: '' });
     event.preventDefault();
   };
