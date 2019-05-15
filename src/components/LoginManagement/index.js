@@ -10,15 +10,8 @@ const SIGN_IN_METHODS = [
   {
     id: 'google.com',
     provider: 'googleProvider',
-  },
-  {
-    id: 'facebook.com',
-    provider: 'facebookProvider',
-  },
-  {
-    id: 'twitter.com',
-    provider: 'twitterProvider',
-  },
+  }
+
 ];
 
 class LoginManagement extends Component {
