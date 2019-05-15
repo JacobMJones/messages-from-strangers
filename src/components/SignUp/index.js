@@ -81,32 +81,34 @@ class SignUpFormBase extends Component {
       email,
       passwordOne,
       passwordTwo,
-      isAdmin,
+      // isAdmin,
       error,
     } = this.state;
 
     const isInvalid =
       passwordOne !== passwordTwo ||
       passwordOne === '' ||
-      email === '' ||
-      username === '';
+      email === ''
+      //  || username === '';
 
     return (
       <form onSubmit={this.onSubmit}>
-        <input
+        {/* <input
           name="username"
           value={username}
           onChange={this.onChange}
           type="text"
           placeholder="Full Name"
         />
+        <br /> */}
         <input
           name="email"
           value={email}
           onChange={this.onChange}
           type="text"
-          placeholder="Email Address"
+          placeholder="Username"
         />
+        <br />
         <input
           name="passwordOne"
           value={passwordOne}
@@ -114,14 +116,15 @@ class SignUpFormBase extends Component {
           type="password"
           placeholder="Password"
         />
+        <br />
         <input
           name="passwordTwo"
           value={passwordTwo}
           onChange={this.onChange}
           type="password"
           placeholder="Confirm Password"
-        />
-        <label>
+        /><br/>
+        {/* <label>
           Admin:
           <input
             name="isAdmin"
@@ -129,7 +132,7 @@ class SignUpFormBase extends Component {
             checked={isAdmin}
             onChange={this.onChangeCheckbox}
           />
-        </label>
+        </label> */}
         <button disabled={isInvalid} type="submit">
           Sign Up
         </button>

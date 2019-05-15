@@ -33,10 +33,12 @@ class Firebase {
   // *** Auth API ***
 
   doCreateUserWithEmailAndPassword = (email, password) =>
-    this.auth.createUserWithEmailAndPassword(email, password);
+    this.auth.createUserWithEmailAndPassword(`${email}@messagesfromstrangers.com`, password);
 
   doSignInWithEmailAndPassword = (email, password) =>
-    this.auth.signInWithEmailAndPassword(email, password);
+    this.auth.signInWithEmailAndPassword(`${email}@messagesfromstrangers.com`, password);
+
+
 
   doSignInWithGoogle = () =>
     this.auth.signInWithPopup(this.googleProvider);

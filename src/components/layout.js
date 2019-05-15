@@ -19,8 +19,6 @@ class Layout extends Component {
 
       this.setState({ firebase });
     });
-  
-
   }
 
   render() {
@@ -33,11 +31,7 @@ class Layout extends Component {
 }
 
 const AppWithAuthentication = withAuthentication(({ children }) => (
-  <Fragment>
-    <Navigation />
-    <hr />
-    {children}
-  </Fragment>
+  <Fragment>{children}</Fragment>
 ));
 
 export default Layout;
