@@ -32,15 +32,15 @@ class FindMessage extends Component {
   };
 
   async getRandomMessage() {
-    let messageCount = await this.props.firebase.getMessageCount()
-   console.log('message count', messageCount)
+    let messageCount = await this.props.firebase.getMessageCount();
+    console.log('message count', messageCount);
 
- 
-   
-
-    await this.props.firebase.getRandomMessage(messageCount,(value) => {
-      this.props.firebase.getMessageText(value, this.updateState);
-    });
+    await this.props.firebase.getRandomMessage(
+      messageCount,
+      value => {
+        this.props.firebase.getMessageText(value, this.updateState);
+      },
+    );
   }
 
   render() {
@@ -48,15 +48,15 @@ class FindMessage extends Component {
       <AuthUserContext.Consumer>
         {authUser => (
           <div>
+            {this.state.randomMessageText}
+            <br/>
             <button
               onClick={() => {
                 this.getRandomMessage();
               }}
             >
               Find a Random Message
-    
             </button>
-            {this.state.randomMessageText}
           </div>
         )}
       </AuthUserContext.Consumer>

@@ -23,13 +23,11 @@ const ERROR_MSG_ACCOUNT_EXISTS = `
 class SignInFormBase extends Component {
   constructor(props) {
     super(props);
-
     this.state = { ...INITIAL_STATE };
   }
 
   onSubmit = event => {
     const { email, password } = this.state;
-
     this.props.firebase
       .doSignInWithEmailAndPassword(email, password)
       .then(() => {
@@ -49,7 +47,6 @@ class SignInFormBase extends Component {
 
   render() {
     const { email, password, error } = this.state;
-
     const isInvalid = password === '' || email === '';
 
     return (
@@ -61,13 +58,14 @@ class SignInFormBase extends Component {
           type="text"
           placeholder="Email Address"
         />
+        <br/>
         <input
           name="password"
           value={password}
           onChange={this.onChange}
           type="password"
           placeholder="Password"
-        />
+        /><br/>
         <button disabled={isInvalid} type="submit">
           Sign In
         </button>
@@ -116,7 +114,7 @@ class SignInGoogleBase extends Component {
 
     return (
       <form onSubmit={this.onSubmit}>
-        <button type="submit">Sign In with Google</button>
+        {/* <button type="submit">Sign In with Google</button> */}
 
         {error && <p>{error.message}</p>}
       </form>
@@ -125,10 +123,8 @@ class SignInGoogleBase extends Component {
 }
 
 const SignInForm = withFirebase(SignInFormBase);
-
 const SignInGoogle = withFirebase(SignInGoogleBase);
 
 
 export default SignInForm;
-
 export { SignInGoogle};

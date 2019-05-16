@@ -1,4 +1,5 @@
 import React from 'react';
+import { navigate } from 'gatsby';
 import { compose } from 'recompose';
 import SignOutButton from '../components/SignOut';
 import Layout from '../components/layout';
@@ -8,6 +9,7 @@ import {
 } from '../components/Session';
 import Messages from '../components/Messages';
 import FindMessage from '../components/FindMessage';
+import * as ROUTES from '../constants/routes';
 const HomePageBase = () => (
   <div>
     <h1>Home Page</h1>
@@ -22,9 +24,11 @@ const HomePage = compose(withAuthorization(condition))(HomePageBase);
 export default () => (
   <Layout>
     <HomePage />
-    <Messages />
-    <SignOutButton />
-    <br/><br/><br/><br/><br/>
+    {/* <Messages /> */}
+    <button onClick={()=>{navigate(ROUTES.MY_MESSAGES)}}>My Messages</button>
+   
+    <br/><br/>
     <FindMessage />
+    <SignOutButton />
   </Layout>
 );

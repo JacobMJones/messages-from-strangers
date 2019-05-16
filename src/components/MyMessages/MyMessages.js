@@ -1,9 +1,8 @@
 import React, { Component } from 'react';
-
 import { AuthUserContext } from '../Session';
 import { withFirebase } from '../Firebase';
-import MessageList from './MessageList';
-
+import MessageList from './MyMessageList';
+import { navigate } from 'gatsby';
 class Messages extends Component {
   _initFirebase = false;
 
@@ -154,8 +153,10 @@ class Messages extends Component {
                 value={text}
                 onChange={this.onChangeText}
               />
-              <button type="submit">Send</button>
+              <button type="submit">Sendd</button>
+              asd
             </form>
+         
           </div>
         )}
       </AuthUserContext.Consumer>
