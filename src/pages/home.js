@@ -12,7 +12,7 @@ import FindMessage from '../components/FindMessage';
 import * as ROUTES from '../constants/routes';
 const HomePageBase = () => (
   <div>
-    <h1>Home Page</h1>
+ 
     <p>This is your homepage</p>
   </div>
 );

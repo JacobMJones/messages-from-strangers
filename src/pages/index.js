@@ -9,14 +9,13 @@ import * as ROUTES from '../constants/routes';
 
 const LandingPage = () => (
   <Fragment>
-    <h1>Messages from Strangers</h1>
-    <p>
-      A site for sending and receiving anonymous messages
-    </p>
-
+    <img style={{height:'50vh', width:'auto'}}src="/images/banner-homepage.png"/>
+    <br/>
+    <div style={{fontSize:'24px'}}>
     <Link to={ROUTES.SIGN_UP}>Sign Up</Link>
     <br />
     <Link to={ROUTES.SIGN_IN}>Sign In</Link>
+    </div>
   </Fragment>
 );
 

@@ -1,6 +1,4 @@
 import React, { Component, Fragment } from 'react';
-
-import Navigation from './Navigation';
 import getFirebase, { FirebaseContext } from './Firebase';
 import withAuthentication from './Session/withAuthentication';
 
@@ -31,7 +29,7 @@ class Layout extends Component {
 }
 
 const AppWithAuthentication = withAuthentication(({ children }) => (
-  <Fragment>{children}</Fragment>
+  <Fragment><div style={{textAlign:'center', marginTop:'15vh'}}>{children}</div></Fragment>
 ));
 
 export default Layout;

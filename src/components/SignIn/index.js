@@ -27,10 +27,12 @@ class SignInFormBase extends Component {
   }
 
   onSubmit = event => {
+    console.log('on submit called');
     const { email, password } = this.state;
     this.props.firebase
       .doSignInWithEmailAndPassword(email, password)
       .then(() => {
+        console.log('in on submit promise');
         this.setState({ ...INITIAL_STATE });
         navigate(ROUTES.HOME);
       })
@@ -56,7 +58,7 @@ class SignInFormBase extends Component {
           value={email}
           onChange={this.onChange}
           type="text"
-          placeholder="Email Address"
+          placeholder="Name"
         />
         <br/>
         <input
