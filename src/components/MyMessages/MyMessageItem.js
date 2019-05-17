@@ -32,7 +32,7 @@ class MessageItem extends Component {
     const { editMode, editText } = this.state;
 
     return (
-      <li>
+      <span style={{fontFamily:'Raleway', fontSize:'1.5em'}}>
         {editMode ? (
           <input
             type="text"
@@ -48,7 +48,7 @@ class MessageItem extends Component {
 
         {authUser.uid === message.userId && (
          
-          <span>
+          <span style={{fontFamily:'Raleway', fontSize:'1.5em'}}>
              <br/>
             {editMode ? (
               <span>
@@ -66,10 +66,13 @@ class MessageItem extends Component {
               >
                 Delete
               </button>
+              
             )}
+            <br/>
+            <br/>
           </span>
         )}
-      </li>
+      </span>
     );
   }
 }

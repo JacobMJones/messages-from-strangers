@@ -13,7 +13,8 @@ import * as ROUTES from '../constants/routes';
 const HomePageBase = () => (
   <div>
  
-    <p>This is your homepage</p>
+    <p style={{fontFamily:'Raleway', fontSize:'2.5em'}}>This is your homepage</p>
+    
   </div>
 );
 
@@ -25,10 +26,11 @@ export default () => (
   <Layout>
     <HomePage />
     {/* <Messages /> */}
-    <button onClick={()=>{navigate(ROUTES.MY_MESSAGES)}}>My Messages</button>
+    <button style={{marginBottom:'15vh'}} onClick={()=>{navigate(ROUTES.MY_MESSAGES)}}>My Messages</button>
    
-    <br/><br/>
+   
     <FindMessage />
+    <br/><br/>
     <SignOutButton />
   </Layout>
 );

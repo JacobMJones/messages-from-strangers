@@ -7,7 +7,7 @@ import { PasswordForgetLink } from '../components/PasswordForget';
 
 const SignInPage = () => (
   <Fragment>
-    <h1>Sign In</h1>
+    <h1 style={{fontFamily:'Raleway', fontSize:'2.5em'}}>Sign In</h1>
     <SignInForm />
     <SignUpLink />
     {/* <SignInGoogle />

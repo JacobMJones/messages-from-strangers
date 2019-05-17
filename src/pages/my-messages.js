@@ -8,12 +8,12 @@ import {
   withAuthorization,
   // withEmailVerification,
 } from '../components/Session';
-import Messages from '../components/Messages';
+import Messages from '../components/MyMessages';
 import FindMessage from '../components/FindMessage';
 const MyMessagesBase = () => (
   <div>
-    <h1>My Messages</h1>
-   
+    <h1 style={{fontFamily:'Raleway', fontSize:'2em'}}>My Messages</h1>
+    <br/><br/>
   </div>
 );
 

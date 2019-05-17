@@ -47,7 +47,7 @@ class FindMessage extends Component {
     return (
       <AuthUserContext.Consumer>
         {authUser => (
-          <div>
+          <div style={{fontFamily:'Raleway', fontSize:'1.5em'}}>
             {this.state.randomMessageText}
             <br/>
             <button

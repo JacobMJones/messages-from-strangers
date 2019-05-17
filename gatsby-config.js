@@ -1,6 +1,38 @@
 require('dotenv').config({
     path: `.env.${process.env.NODE_ENV}`,
   })
-
-  plugins: [`gatsby-transformer-sharp`, `gatsby-plugin-sharp`]
-  
+  module.exports = {
+    plugins: [`gatsby-plugin-styled-components`],
+  }
+  module.exports = {
+    plugins: [
+      {
+        resolve: `gatsby-plugin-prefetch-google-fonts`,
+        options: {
+          fonts: [
+            {
+              family: `Oswald`,
+              subsets: [`latin`],
+            },
+            {
+              family: `Raleway`,
+              subsets: [`latin`],
+            },
+            {
+              "family": "Roboto",
+              "variants": [
+                "400",
+                "400i",
+                "700",
+                "700i"
+              ],
+              "subsets": [
+                "latin-ext"
+              ]
+            },
+          ],
+        },
+      },
+      
+    ]
+  }

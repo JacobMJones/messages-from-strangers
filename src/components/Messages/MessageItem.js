@@ -32,7 +32,7 @@ class MessageItem extends Component {
     const { editMode, editText } = this.state;
 
     return (
-      <li>
+      <div>
         {editMode ? (
           <input
             type="text"
@@ -49,7 +49,8 @@ class MessageItem extends Component {
         {authUser.uid === message.userId && (
          
           <span>
-             <br/>
+            <br/>
+           
             {editMode ? (
               <span>
                 <button onClick={this.onSaveEditText}>Save</button>
@@ -67,9 +68,10 @@ class MessageItem extends Component {
                 Delete
               </button>
             )}
+            <br/><br/>
           </span>
         )}
-      </li>
+      </div>
     );
   }
 }

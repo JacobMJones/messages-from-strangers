@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { navigate } from 'gatsby';
 
+
 import { withFirebase } from '../Firebase';
 import * as ROUTES from '../../constants/routes';
 
