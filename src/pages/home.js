@@ -10,10 +10,23 @@ import {
 import Messages from '../components/Messages';
 import FindMessage from '../components/FindMessage';
 import * as ROUTES from '../constants/routes';
+import styled from 'styled-components';
+
+const Button = styled.div`
+
+height:10vh;
+width:20vw;
+`
+
 const HomePageBase = () => (
   <div>
  
-    <p style={{fontFamily:'Raleway', fontSize:'2.5em'}}>This is your homepage</p>
+    <p style={{fontFamily:'Raleway', fontSize:'2.5em'}}>Mama! Papa! I'm home.</p>
+    
+    <FindMessage />
+    <Button as='button' onClick={()=>{navigate(ROUTES.MY_MESSAGES)}}>My Messages</Button><br/>
+    <Button as='button'>My Conversations</Button><br/>
+    <Button as='button'>Account Stuff</Button>
     
   </div>
 );
@@ -24,12 +37,13 @@ const HomePage = compose(withAuthorization(condition))(HomePageBase);
 
 export default () => (
   <Layout>
+      
     <HomePage />
     {/* <Messages /> */}
-    <button style={{marginBottom:'15vh'}} onClick={()=>{navigate(ROUTES.MY_MESSAGES)}}>My Messages</button>
+  
    
    
-    <FindMessage />
+  
     <br/><br/>
     <SignOutButton />
   </Layout>

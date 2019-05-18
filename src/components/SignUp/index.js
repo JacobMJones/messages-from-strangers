@@ -27,7 +27,6 @@ const ERROR_MSG_ACCOUNT_EXISTS = `
 class SignUpFormBase extends Component {
   constructor(props) {
     super(props);
-
     this.state = { ...INITIAL_STATE };
   }
 
@@ -42,7 +41,6 @@ class SignUpFormBase extends Component {
     this.props.firebase
       .doCreateUserWithEmailAndPassword(email, passwordOne)
       .then(authUser => {
-        // Create a user in your Firebase realtime database
         return this.props.firebase.user(authUser.user.uid).set({
           username,
           email,
@@ -57,10 +55,8 @@ class SignUpFormBase extends Component {
         if (error.code === ERROR_CODE_ACCOUNT_EXISTS) {
           error.message = ERROR_MSG_ACCOUNT_EXISTS;
         }
-
         this.setState({ error });
       });
-
     event.preventDefault();
   };
 
@@ -133,7 +129,6 @@ class SignUpFormBase extends Component {
         <button disabled={isInvalid} type="submit">
           Sign Up
         </button>
-
         {error && <p>{error.message}</p>}
       </form>
     );

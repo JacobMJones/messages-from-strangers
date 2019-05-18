@@ -1,5 +1,4 @@
 import React, { Component } from 'react';
-import { AuthUserContext } from '../Session';
 import { withFirebase } from '../Firebase';
 
 class FindMessage extends Component {
@@ -7,22 +6,7 @@ class FindMessage extends Component {
 
   constructor(props) {
     super(props);
-
     this.state = {};
-  }
-
-  firebaseInit = () => {
-    if (this.props.firebase && !this._initFirebase) {
-      this._initFirebase = true;
-    }
-  };
-
-  componentDidMount() {
-    this.firebaseInit();
-  }
-
-  componentDidUpdate() {
-    this.firebaseInit();
   }
 
   updateState = (key, value) => {
@@ -45,21 +29,16 @@ class FindMessage extends Component {
 
   render() {
     return (
-      <AuthUserContext.Consumer>
-        {authUser => (
-          <div style={{fontFamily:'Raleway', fontSize:'1.5em'}}>
-            {this.state.randomMessageText}
-            <br/>
-            <button
-              onClick={() => {
-                this.getRandomMessage();
-              }}
-            >
-              Find a Random Message
-            </button>
-          </div>
-        )}
-      </AuthUserContext.Consumer>
+      <div style={{ fontFamily: 'Raleway', fontSize: '1.5em' }}>
+        {this.state.randomMessageText}
+        <button
+          onClick={() => {
+            this.getRandomMessage();
+          }}
+        >
+          Find a Random Message
+        </button>
+      </div>
     );
   }
 }
