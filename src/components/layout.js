@@ -30,14 +30,8 @@ class Layout extends Component {
 
 const AppWithAuthentication = withAuthentication(({ children }) => (
   <Fragment>
-    <div
-      style={{
-        display: 'grid',
-        height: '100vh',
-      }}
-    >
-      <span style={{ margin: 'auto' }}>{children}</span>
-    </div>
+    {children}
+
   </Fragment>
 ));
 

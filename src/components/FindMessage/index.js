@@ -31,6 +31,7 @@ class FindMessage extends Component {
     return (
       <div style={{ fontFamily: 'Raleway', fontSize: '1.5em' }}>
         {this.state.randomMessageText}
+        <br/>
         <button
           onClick={() => {
             this.getRandomMessage();
@@ -38,6 +39,7 @@ class FindMessage extends Component {
         >
           Find a Random Message
         </button>
+        <br/>
       </div>
     );
   }
