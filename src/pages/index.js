@@ -1,30 +1,39 @@
-import React, { Fragment } from 'react';
+import React, { Fragment, Component } from 'react';
 import Layout from '../components/layout';
-import { Link } from 'gatsby';
 import { navigate } from 'gatsby';
 import * as ROUTES from '../constants/routes';
 import styled from 'styled-components';
-// import * as ROLES from '../constants/roles';
-
-// import { AuthUserContext } from '../Session';
-// import SignOutButton from '../SignOut';
+import device from '../constants/devices.js';
 
 const Button = styled.div`
+  border-radius: 4px;
   background-color: white;
-  width: 20vw;
-  border: 0.01em solid;
-  height: 10vh;
+  border: solid 1px;
+  color: black;
   text-align: center;
+  font-family: Raleway;
+  font-size: 28px;
+  padding: 20px;
+  width: 200px;
+  transition: all 0.5s;
+  cursor: pointer;
+  margin: 5px;
   display: inline-block;
-  margin: 20px;
 `;
 const ButtonContainer = styled.div`
-  background-color: green;
   text-align: center;
 `;
 const BannerContainer = styled.div`
+  @media ${device.mobile} {
+    margin-top: 2vh;
+  }
+  @media ${device.laptop} {
+    margin-top: 12vh;
+  }
+
+ 
+
   text-align: center;
-  background-color: red;
 `;
 const BannerImage = styled.div`
   display: inline-block;
@@ -32,38 +41,58 @@ const BannerImage = styled.div`
   width: auto;
 `;
 const Title = styled.div`
-  font-size: 30px;
+  font-size: 2.5rem;
   font-family: Raleway;
 `;
 
-const LandingPage = () => (
-  <Fragment>
-    <BannerContainer>
-      <Title>
-        Messages <br />
-        From
-        <br />Strangers
-      </Title>
-      <BannerImage as="img" src="/images/banner-homepage.png" />
-    </BannerContainer>
-    <ButtonContainer>
-      <Button
-        onClick={() => {
-          navigate(ROUTES.SIGN_UP);
-        }}
-      >
-        Sign up
-      </Button>
-      <Button
-        onClick={() => {
-          navigate(ROUTES.SIGN_IN);
-        }}
-      >
-        Sign in
-      </Button>
-    </ButtonContainer>
-  </Fragment>
-);
+class LandingPage extends Component {
+  constructor(props) {
+    super(props);
+    this.state = { canRender: false };
+  }
+  componentDidMount() {
+    this.setState({ canRender: true });
+  }
+  render() {
+    console.log('hello', device);
+    return (
+      <Fragment>
+        {this.state.canRender && (
+          <Fragment>
+            <BannerContainer>
+              <Title>
+                Messages <br />
+                From
+                <br />
+                Strangers
+              </Title>
+              <BannerImage
+                as="img"
+                src="/images/banner-homepage.png"
+              />
+            </BannerContainer>
+            <ButtonContainer>
+              <Button
+                onClick={() => {
+                  navigate(ROUTES.SIGN_UP);
+                }}
+              >
+                Sign up
+              </Button>
+              <Button
+                onClick={() => {
+                  navigate(ROUTES.SIGN_IN);
+                }}
+              >
+                Sign in
+              </Button>
+            </ButtonContainer>
+          </Fragment>
+        )}
+      </Fragment>
+    );
+  }
+}
 
 export default () => (
   <Layout>
