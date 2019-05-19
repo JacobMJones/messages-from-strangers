@@ -9,7 +9,7 @@ const SignOutButton = ({ firebase }) => (
     onClick={firebase ? firebase.doSignOut : () => {}}
   >
     Sign Out
-    <Link to={ROUTES.LANDING} />
+    {/* <Link to={ROUTES.LANDING} /> */}
   </button>
 );
 

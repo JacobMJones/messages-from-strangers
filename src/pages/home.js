@@ -3,32 +3,64 @@ import { navigate } from 'gatsby';
 import { compose } from 'recompose';
 import SignOutButton from '../components/SignOut';
 import Layout from '../components/layout';
-import {
-  withAuthorization,
-  // withEmailVerification,
-} from '../components/Session';
-import Messages from '../components/Messages';
-import FindMessage from '../components/FindMessage';
+import { withAuthorization } from '../components/Session';
+
 import * as ROUTES from '../constants/routes';
 import styled from 'styled-components';
 
 const Button = styled.div`
+  height: 100%;
+  width: 20vw;
+`;
 
-height:10vh;
-width:20vw;
-`
+const OutterContainer = styled.div`
+ 
+  background-color:brown;
+  height:100vh;
+  text-align:center;
+  align-items:center;
+  justify-content:center;
+`;
+const InnerContainer = styled.div`
+ height:33%;
+ width:100vw;
+flex:1;
+`;
 
 const HomePageBase = () => (
-  <div>
- 
-    <p style={{fontFamily:'Raleway', fontSize:'2.5em'}}>Mama! Papa! I'm home.</p>
-    
-    <FindMessage />
-    <Button as='button' onClick={()=>{navigate(ROUTES.MY_MESSAGES)}}>My Messages</Button><br/>
-    <Button as='button'>My Conversations</Button><br/>
-    <Button as='button'>Account Stuff</Button>
-    
-  </div>
+  <OutterContainer>
+    <InnerContainer style={{backgroundColor:'blue'}}>
+      {/* <Button
+        as="button"
+        onClick={() => {
+          navigate(ROUTES.READ);
+        }}
+      >
+        Read
+      </Button> */}
+    </InnerContainer>
+    <InnerContainer style={{backgroundColor:'red'}}>
+      {/* <Button
+        as="button"
+        onClick={() => {
+          navigate(ROUTES.WRITE);
+        }}
+      >
+        Write.
+      </Button> */}
+    </InnerContainer>
+    <InnerContainer style={{backgroundColor:'yellow'}}>
+      {/* <Button
+        as="button"
+        onClick={() => {
+          navigate(ROUTES.WRITE);
+        }}
+      >
+        Write.
+      </Button> */}
+    </InnerContainer>
+
+  </OutterContainer>
 );
 
 const condition = authUser => !!authUser;
@@ -37,14 +69,7 @@ const HomePage = compose(withAuthorization(condition))(HomePageBase);
 
 export default () => (
   <Layout>
-      
     <HomePage />
-    {/* <Messages /> */}
-  
-   
-   
-  
-    <br/><br/>
     <SignOutButton />
   </Layout>
 );

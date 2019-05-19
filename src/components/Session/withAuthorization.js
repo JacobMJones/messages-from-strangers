@@ -16,10 +16,10 @@ const withAuthorization = condition => Component => {
         this.listener = this.props.firebase.onAuthUserListener(
           authUser => {
             if (!condition(authUser)) {
-              navigate(ROUTES.SIGN_IN);
+              navigate(ROUTES.LANDING);
             }
           },
-          () => navigate(ROUTES.SIGN_IN),
+          () => navigate(ROUTES.LANDING),
         );
       }
     };

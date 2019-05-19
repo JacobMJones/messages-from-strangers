@@ -28,13 +28,22 @@ const BannerContainer = styled.div`
 `;
 const BannerImage = styled.div`
   display: inline-block;
-  height: 50vh;
+  height: 35vh;
   width: auto;
+`;
+const Title = styled.div`
+  font-size: 30px;
+  font-family: Raleway;
 `;
 
 const LandingPage = () => (
   <Fragment>
     <BannerContainer>
+      <Title>
+        Messages <br />
+        From
+        <br />Strangers
+      </Title>
       <BannerImage as="img" src="/images/banner-homepage.png" />
     </BannerContainer>
     <ButtonContainer>

@@ -98,10 +98,10 @@ class Firebase {
 
   async getMessageCount() {
     let num = await this.db
-      .ref('messages/messagesInfo')
+      .ref('messages/messageInfo')
       .once('value')
       .then(snapshot => {
-        return snapshot.val().messagesCount;
+        return snapshot.val().messageCount;
       });
       return num
   }
@@ -109,13 +109,13 @@ class Firebase {
     console.log('increment');
 
     this.db
-      .ref('messages/messagesInfo')
+      .ref('messages/messageInfo')
       .once('value')
       .then(snapshot => {
-        let currentCount = snapshot.val().messagesCount;
+        let currentCount = snapshot.val().messageCount;
         this.db
-          .ref('messages/messagesInfo')
-          .update({ messagesCount: currentCount + num });
+          .ref('messages/messageInfo')
+          .update({ messageCount: currentCount + num });
       });
   };
   message = uid => this.db.ref(`messages/${uid}`);
