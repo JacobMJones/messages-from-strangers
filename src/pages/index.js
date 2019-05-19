@@ -3,7 +3,7 @@ import Layout from '../components/layout';
 import { navigate } from 'gatsby';
 import * as ROUTES from '../constants/routes';
 import styled from 'styled-components';
-import device from '../constants/devices.js';
+import device from '../constants/devices.js'
 
 const Button = styled.div`
   border-radius: 4px;
@@ -30,9 +30,6 @@ const BannerContainer = styled.div`
   @media ${device.laptop} {
     margin-top: 12vh;
   }
-
- 
-
   text-align: center;
 `;
 const BannerImage = styled.div`

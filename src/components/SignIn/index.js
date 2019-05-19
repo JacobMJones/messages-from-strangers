@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 import { navigate } from 'gatsby';
 
-
 import { withFirebase } from '../Firebase';
 import * as ROUTES from '../../constants/routes';
 
@@ -55,20 +54,23 @@ class SignInFormBase extends Component {
     return (
       <form onSubmit={this.onSubmit}>
         <input
+          style={{ fontSize: '16px' }}
           name="email"
           value={email}
           onChange={this.onChange}
           type="text"
           placeholder="Name"
         />
-        <br/>
+        <br />
         <input
+          style={{ fontSize: '16px' }}
           name="password"
           value={password}
           onChange={this.onChange}
           type="password"
           placeholder="Password"
-        /><br/>
+        />
+        <br />
         <button disabled={isInvalid} type="submit">
           Sign In
         </button>
@@ -128,6 +130,5 @@ class SignInGoogleBase extends Component {
 const SignInForm = withFirebase(SignInFormBase);
 const SignInGoogle = withFirebase(SignInGoogleBase);
 
-
 export default SignInForm;
-export { SignInGoogle};
+export { SignInGoogle };
