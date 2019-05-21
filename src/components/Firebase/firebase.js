@@ -26,25 +26,27 @@ class Firebase {
     /* Social Sign In Method Provider */
 
     this.googleProvider = new app.auth.GoogleAuthProvider();
- 
   }
 
   // *** Auth API ***
 
   doCreateUserWithEmailAndPassword = (email, password) =>
-    this.auth.createUserWithEmailAndPassword(`${email}@messagesfromstrangers.com`, password);
+    this.auth.createUserWithEmailAndPassword(
+      `${email}@messagesfromstrangers.com`,
+      password,
+    );
 
   doSignInWithEmailAndPassword = (email, password) =>
-    this.auth.signInWithEmailAndPassword(`${email}@messagesfromstrangers.com`, password);
-
-
+    this.auth.signInWithEmailAndPassword(
+      `${email}@messagesfromstrangers.com`,
+      password,
+    );
 
   doSignInWithGoogle = () =>
     this.auth.signInWithPopup(this.googleProvider);
 
-
-  doSignOut = () => {this.auth.signOut() 
-    
+  doSignOut = () => {
+    this.auth.signOut();
   };
 
   doPasswordReset = email => this.auth.sendPasswordResetEmail(email);
@@ -103,9 +105,9 @@ class Firebase {
       .then(snapshot => {
         return snapshot.val().messageCount;
       });
-      return num
+    return num;
   }
-  incrementMessageCount = (num) => {
+  incrementMessageCount = num => {
     console.log('increment');
 
     this.db
@@ -125,7 +127,12 @@ class Firebase {
       .ref(`messages/${uid}`)
       .once('value')
       .then(snapshot => {
-        cb('randomMessageText', snapshot.val().text);
+        cb('randomMessage', {
+          text: snapshot.val().text,
+          index: snapshot.val().index,
+          authorId: snapshot.val().userId,
+       
+        });
       });
   };
 
@@ -144,7 +151,7 @@ class Firebase {
     this.db
       .ref('messages')
       .orderByChild('index')
-      .equalTo(Math.floor((Math.random() * index) + 1))
+      .equalTo(Math.floor(Math.random() * index + 1))
       .once('value')
       .then(snapshot => {
         snapshot.forEach(function(data) {

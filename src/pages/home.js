@@ -7,58 +7,11 @@ import { withFirebase } from '../components/Firebase';
 import * as ROUTES from '../constants/routes';
 import styled from 'styled-components';
 import device from '../constants/devices.js';
+import CreateMessage from '../components/CreateMessage';
+import ReadMyMessages from '../components/ReadMyMessages';
+import {MessageButton, Button, FlexItem, FlexContainer, MessageText, ButtonText} from './homeStyle.js'
 
-const Button = styled.div`
-  @media ${device.mobile} {
-    height: 90%;
-    width: 90%;
-    font-family: Raleway;
-    font-size: 4em;
-    border-radius: 5px;
-    background-color: white;
-    border: solid 0.1rem;
-    cursor: pointer;
-  }
-  @media ${device.laptop} {
-    height: 100%;
-    width: 50%;
-    font-family: Raleway;
-    font-size: 4em;
-    border-radius: 5px;
-    background-color: white;
-    border: solid 0.1rem;
-    cursor: pointer;
-  }
-`;
-const OutterContainer = styled.div`
-  height: 90vh;
-  width: 100vw;
-  position: absolute;
-  left: 0;
-  top: 0;
-  text-align: center;
-`;
-const InnerContainer = styled.div`
-  height: ${props => props.height && props.height}%;
-  width: 90%;
-  margin: 2vh;
-  display: inline-block;
-`;
-const UtilityIcon = styled.div`
-  @media ${device.mobile} {
-    height: 100px;
-    width: auto;
-    flex: 1;
-    width: auto;
-    margin: 10px;
-  }
-  @media ${device.laptop} {
-    height: 100px;
-    width: 100px;
-    margin: 40px;
-    cursor: pointer;
-  }
-`;
+
 
 class HomePageBase extends Component {
   constructor(props) {
@@ -66,52 +19,194 @@ class HomePageBase extends Component {
     this.state = { canRender: false };
   }
   componentDidMount() {
-    this.setState({ canRender: true });
+    this.setState({ canRender: true }, () => {
+    //  setInterval(200,this.getRandomMessage());
+    });
+   
+  }
+
+  updateState = (key, value) => {
+    this.setState({ [key]: value }, () => {
+      console.log(this.state, 'home');
+    });
+  };
+
+  async getRandomMessage() {
+    this.setState({ showing: 'read' });
+    let messageCount = await this.props.firebase.getMessageCount();
+    await this.props.firebase.getRandomMessage(
+      messageCount,
+      value => {
+        this.props.firebase.getMessageText(value, this.updateState);
+      },
+    );
+    // await this.setState({ showing: 'justSent' });
   }
   render() {
     const firebase = this.props.firebase;
+    const { showing, randomMessage } = this.state;
+    console.log(this.state.showing);
     return (
-      <div style={{ maxMidth: '100vw', maxHeight: '100vh' }}>
-        {this.state.canRender && (
-          <OutterContainer>
-            <InnerContainer style={{ marginTop: '24px' }} height={30}>
-              <Button
-                as="button"
-                onClick={() => {
-                  navigate(ROUTES.READ);
-                }}
+      <div
+        style={{
+          width: '100vw',
+          height: '100vh',
+        }}
+      >
+        <div style={{ height: '100%' }}>
+          {this.state.randomMessage && (
+            <FlexContainer
+              style={
+                showing !== 'reply'
+                  ? { height: '75%' }
+                  : { height: '90%' }
+              }
+              flexDirection={'column'}
+            >
+              <FlexItem
+                flexSize={showing !== 'reply' ? 0.4 : 0.4}
+                style={{ backgroundColor: 'orange' }}
               >
-                Read.
-              </Button>
-            </InnerContainer>
-            <InnerContainer height={30}>
-              <Button
-                as="button"
-                onClick={() => {
-                  navigate(ROUTES.WRITE);
-                }}
+                Date
+              </FlexItem>
+              <FlexItem
+                flexSize={3}
+                style={{ backgroundColor: 'lightyellow' }}
               >
-                Write.
-              </Button>
-            </InnerContainer>
-
-            <InnerContainer height={10}>
-              <UtilityIcon
-                as="img"
-                src="/images/user-icon.png"
-                onClick={() => {
-                  navigate(ROUTES.ACCOUNT);
-                }}
-              />
-              <UtilityIcon
-                as="img"
-                src="/images/door.png"
-                onClick={() => {
-                  firebase.doSignOut();
-                }}
-              />
-            </InnerContainer>
-          </OutterContainer>
+                <MessageText>
+                  {this.state.randomMessage.text}
+                </MessageText>
+              </FlexItem>
+              <FlexItem
+                flexSize={showing !== 'reply' ? 0.5 : 0.3}
+                style={{ backgroundColor: 'lightblue' }}
+              >
+                <FlexContainer>
+                  <FlexItem>
+                    <MessageButton
+                      onClick={() => {
+                        this.getRandomMessage();
+                      }}
+                    >
+                      {showing !== 'reply' ? 'Pass' : 'Nevermind'}
+                    </MessageButton>
+                  </FlexItem>
+                  <FlexItem>
+                    {showing !== 'reply' ? (
+                      <MessageButton
+                        onClick={() => {
+                          this.getRandomMessage();
+                        }}
+                      >
+                        Trash
+                      </MessageButton>
+                    ) : (
+                      <Fragment />
+                    )}
+                  </FlexItem>
+                  <FlexItem>
+                    <MessageButton
+                      onClick={() => {
+                        this.setState({ showing: 'reply' });
+                      }}
+                    >
+                      Reply
+                    </MessageButton>
+                  </FlexItem>
+                </FlexContainer>
+              </FlexItem>
+            </FlexContainer>
+          )}
+          {this.state.showing === 'write' && <CreateMessage />}
+          {this.state.showing === 'chats' && (
+            <div>
+              <div>
+                <h1>Chats</h1>
+                <div>none...yet...</div>
+              </div>
+              <div>
+                <h1>Stuff you wrote</h1>
+                <ReadMyMessages />
+              </div>
+            </div>
+          )}
+        </div>
+        {showing !== 'reply' && (
+          <div
+            style={{
+              width: '100vw',
+              position: 'fixed',
+              top: '85vh',
+            }}
+            flex={3}
+            backgroundColor="lightyellow"
+          >
+            {/* <div
+              style={{
+                display: 'flex',
+                position: 'absolute',
+                bottom: -100,
+                left: 0,
+                backgroundColor: 'green',
+                width: '100vw',
+              }}
+            > */}
+            <FlexContainer style={{ marginRight: '12px' }}>
+              <FlexItem>
+                <Button
+                  style={{
+                    position: 'relative',
+                    bottom: '50px',
+                    height: 200,
+                  }}
+                  size={this.state.showing === 'write' ? 1.2 : 0.9}
+                  onClick={() => {
+                    this.state.showing !== 'write' &&
+                      this.setState({
+                        showing: 'write',
+                        randomMessage: null,
+                      });
+                  }}
+                >
+                  <ButtonText>Write</ButtonText>
+                </Button>
+              </FlexItem>
+              <FlexItem>
+                <Button
+                  style={{
+                    position: 'relative',
+                    bottom: '50px',
+                    height: 200,
+                  }}
+                  size={this.state.showing === 'read' ? 1.2 : 0.9}
+                  onClick={() => {
+                    this.getRandomMessage();
+                  }}
+                >
+                  <ButtonText>Read</ButtonText>
+                </Button>
+              </FlexItem>
+              <FlexItem>
+                <Button
+                  style={{
+                    position: 'relative',
+                    bottom: '50px',
+                    height: 200,
+                  }}
+                  size={this.state.showing === 'chats' ? 1.2 : 0.9}
+                  onClick={() => {
+                    this.setState({
+                      showing: 'chats',
+                      randomMessage: null,
+                    });
+                  }}
+                >
+                  <ButtonText>Chats</ButtonText>
+                </Button>
+              </FlexItem>
+            </FlexContainer>
+          </div>
+          // </div>
         )}
       </div>
     );

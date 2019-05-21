@@ -21,53 +21,20 @@ class CreateMessage extends Component {
     if (this.props.firebase && !this._initFirebase) {
       this._initFirebase = true;
 
-      setTimeout(() => {
-        this.onListenForMessages();
-      }, 100);
     }
   };
 
   componentDidMount() {
-    this.firebaseInit();
+    // this.firebaseInit();
   }
 
   componentDidUpdate() {
-    this.firebaseInit();
+    // this.firebaseInit();
   }
 
-  onListenForMessages = () => {
-    this.setState({ loading: true });
-    if (this.props.firebase != null) {
-      this.props.firebase
-        .filteredMessages(
-          JSON.parse(localStorage.getItem('authUser')).uid,
-        )
-        // .orderByChild('createdAt')
-        .limitToLast(this.state.limit)
-        .on('value', snapshot => {
-          const messageObject = snapshot.val();
-
-          if (messageObject) {
-            const messageList = Object.keys(messageObject).map(
-              key => ({
-                ...messageObject[key],
-                uid: key,
-              }),
-            );
-
-            this.setState({
-              messages: messageList,
-              loading: false,
-            });
-          } else {
-            this.setState({ messages: null, loading: false });
-          }
-        });
-    }
-  };
 
   componentWillUnmount() {
-    this.props.firebase.messages().off();
+   // this.props.firebase.messages().off();
   }
 
   onChangeText = event => {
@@ -89,7 +56,6 @@ class CreateMessage extends Component {
       createdAt: this.props.firebase.serverValue.TIMESTAMP,
     });
     this.props.firebase.incrementMessageCount(+1);
-    this.setState({ text: '' });
     event.preventDefault();
   }
 

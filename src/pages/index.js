@@ -39,6 +39,7 @@ const BannerImage = styled.div`
 `;
 const Title = styled.div`
   font-size: 2.5rem;
+  font-weight:300;
   font-family: Raleway;
 `;
 

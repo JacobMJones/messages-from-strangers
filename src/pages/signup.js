@@ -4,18 +4,19 @@ import Layout from '../components/layout';
 import SignUpForm from '../components/SignUp';
 
 const SignUpPage = () => (
-  <Fragment >
-    <h1 style={{marginBottom:'8vh', textAlign:'center'}}>Sign Up</h1>
-    <div style={{textAlign:'center', marginBottom:'16vh'}}>
-    <SignUpForm  />
+  <Fragment>
+    <h1 style={{ fontFamily: 'Raleway', fontSize: '2.5em' }}>
+      Sign Up
+    </h1>
 
-    </div>
-  
+    <SignUpForm />
   </Fragment>
 );
 
 export default () => (
   <Layout>
-    <SignUpPage />
+    <div style={{ textAlign: 'center' }}>
+      <SignUpPage />
+    </div>
   </Layout>
 );

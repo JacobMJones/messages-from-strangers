@@ -19,6 +19,10 @@ const SignInPage = () => (
 
 export default () => (
   <Layout>
+
+    <div style={{textAlign:'center'}}>
     <SignInPage />
+
+    </div>
   </Layout>
 );
