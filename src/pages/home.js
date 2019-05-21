@@ -7,11 +7,18 @@ import { withFirebase } from '../components/Firebase';
 import * as ROUTES from '../constants/routes';
 import styled from 'styled-components';
 import device from '../constants/devices.js';
+import Message from '../components/Message';
 import CreateMessage from '../components/CreateMessage';
 import ReadMyMessages from '../components/ReadMyMessages';
-import {MessageButton, Button, FlexItem, FlexContainer, MessageText, ButtonText} from './homeStyle.js'
-
-
+import {
+  MessageButton,
+  Button,
+  FlexItem,
+  FlexContainer,
+  MessageText,
+  ButtonText,
+} from './homeStyle.js';
+import BottomNav from '../components/BottomNav';
 
 class HomePageBase extends Component {
   constructor(props) {
@@ -19,13 +26,11 @@ class HomePageBase extends Component {
     this.state = { canRender: false };
   }
   componentDidMount() {
-    this.setState({ canRender: true }, () => {
-    //  setInterval(200,this.getRandomMessage());
-    });
-   
+    this.setState({ canRender: true });
   }
 
   updateState = (key, value) => {
+    console.log('update state called', key, value);
     this.setState({ [key]: value }, () => {
       console.log(this.state, 'home');
     });
@@ -43,8 +48,7 @@ class HomePageBase extends Component {
     // await this.setState({ showing: 'justSent' });
   }
   render() {
-    const firebase = this.props.firebase;
-    const { showing, randomMessage } = this.state;
+    const { showing } = this.state;
     console.log(this.state.showing);
     return (
       <div
@@ -151,60 +155,13 @@ class HomePageBase extends Component {
                 width: '100vw',
               }}
             > */}
-            <FlexContainer style={{ marginRight: '12px' }}>
-              <FlexItem>
-                <Button
-                  style={{
-                    position: 'relative',
-                    bottom: '50px',
-                    height: 200,
-                  }}
-                  size={this.state.showing === 'write' ? 1.2 : 0.9}
-                  onClick={() => {
-                    this.state.showing !== 'write' &&
-                      this.setState({
-                        showing: 'write',
-                        randomMessage: null,
-                      });
-                  }}
-                >
-                  <ButtonText>Write</ButtonText>
-                </Button>
-              </FlexItem>
-              <FlexItem>
-                <Button
-                  style={{
-                    position: 'relative',
-                    bottom: '50px',
-                    height: 200,
-                  }}
-                  size={this.state.showing === 'read' ? 1.2 : 0.9}
-                  onClick={() => {
-                    this.getRandomMessage();
-                  }}
-                >
-                  <ButtonText>Read</ButtonText>
-                </Button>
-              </FlexItem>
-              <FlexItem>
-                <Button
-                  style={{
-                    position: 'relative',
-                    bottom: '50px',
-                    height: 200,
-                  }}
-                  size={this.state.showing === 'chats' ? 1.2 : 0.9}
-                  onClick={() => {
-                    this.setState({
-                      showing: 'chats',
-                      randomMessage: null,
-                    });
-                  }}
-                >
-                  <ButtonText>Chats</ButtonText>
-                </Button>
-              </FlexItem>
-            </FlexContainer>
+            <BottomNav
+              showing={this.state.showing}
+              updateState={(key, value) =>
+                this.updateState(key, value)
+              }
+              getRandomMessage={() => this.getRandomMessage()}
+            />
           </div>
           // </div>
         )}
