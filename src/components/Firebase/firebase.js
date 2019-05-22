@@ -107,33 +107,51 @@ class Firebase {
       });
     return num;
   }
-  incrementMessageCount = num => {
-    console.log('increment');
 
-    this.db
-      .ref('messages/messageInfo')
-      .once('value')
-      .then(snapshot => {
-        let currentCount = snapshot.val().messageCount;
-        this.db
-          .ref('messages/messageInfo')
-          .update({ messageCount: currentCount + num });
-      });
-  };
   message = uid => this.db.ref(`messages/${uid}`);
 
-  getMessageText = (uid, cb) => {
+  getMessageText = (mid, index, cb, uid) => {
     this.db
-      .ref(`messages/${uid}`)
+      .ref(`messages/${mid}`)
       .once('value')
       .then(snapshot => {
-        cb('randomMessage', {
-          text: snapshot.val().text,
-          index: snapshot.val().index,
-          authorId: snapshot.val().userId,
-       
-        });
+        if (snapshot.val().userId !== uid) {
+          cb('randomMessage', {
+            text: snapshot.val().text,
+            index: snapshot.val().index,
+            authorId: snapshot.val().userId,
+            messageId: uid,
+          });
+        } else {
+          this.getRandomMessage(this.getMessageText(), index + 1);
+        }
       });
+  };
+  replyToMessage = (
+    messageId,
+    authorUid,
+    respondentUid,
+    message,
+    reply,
+  ) => {
+    console.log(
+      'reply',
+      messageId,
+      authorUid,
+      respondentUid,
+      message,
+      reply,
+    );
+
+    this.db.ref('threads/' + messageId).set({
+      threadStarter: authorUid,
+      threadResponder: respondentUid,
+      messages: [
+        { text: message, uid: authorUid },
+        { text: reply, uid: respondentUid },
+      ],
+    });
+    this.db.ref(`messages/${messageId}`).update({ available: false });
   };
 
   filteredMessages = uid =>
@@ -146,20 +164,85 @@ class Firebase {
 
   getAllMessages = () => this.db.ref('messages');
 
-  async getRandomMessage(index, cb) {
-    let name;
+  passMessage = (mid, uid) => {
+    console.log('pass on message', mid, uid);
+    this.db
+      .ref(`/messages/${mid}`)
+      .child(`passedUsers`)
+      .update({ [uid]: uid });
+  };
+  
+  getRandomMessage(cb, uid) {
+    let done = false;
+    let keyToPass = '';
     this.db
       .ref('messages')
-      .orderByChild('index')
-      .equalTo(Math.floor(Math.random() * index + 1))
-      .once('value')
-      .then(snapshot => {
-        snapshot.forEach(function(data) {
-          cb(data.key);
-        });
+      .orderByChild('createdAt')
+      .limitToFirst(6)
+      .once('value', snapshot => {
+        for (let key in snapshot.val()) {
+          this.db
+            .ref(`messages/${key}`)
+            .once('value')
+            .then(snapshot => {
+              if (snapshot.val().userId !== uid && !done) {
+                console.log('key2', key, done);
+                if (snapshot.val().passedUsers) {
+                  for (var userId in snapshot.val().passedUsers) {
+                    if (userId !== uid) {
+                      cb('randomMessage', {
+                        text: snapshot.val().text,
+                        index: snapshot.val().index,
+                        authorId: snapshot.val().userId,
+                        messageId: key,
+                      });
+                      done = true;
+                    }
+                  }
+                } else if (!done) {
+                  cb('randomMessage', {
+                    text: snapshot.val().text,
+                    index: snapshot.val().index,
+                    authorId: snapshot.val().userId,
+                    messageId: key,
+                  });
+                  done = true;
+                }
+              }
+            });
+        }
       });
 
-    return name;
+    //      this.db
+    //      .ref(`messages/${key}`)
+    //      .once('value')
+    //      .then(snapshot => {
+    //        (cb)('randomMessage', {
+    //          text: snapshot.val().text,
+    //          index: snapshot.val().index,
+    //          authorId: snapshot.val().userId,
+    //          messageId: uid,
+    //        });
+    //      });
+
+    //       console.log('snapshot key' + key);
+    //       console.log('snapshot.val.text = ' + snapshot.val().text);
+    //       console.log('snapshot.val' + snapshot.val()[key]);
+    // nextUrl = snapshot.val()[key].url;
+    //   }
+    // });
+
+    // this.db
+    // .ref(`messages/${key}`)
+    // .once('value')
+    // .then(snapshot => {
+    //   cb('randomMessage', {
+    //     text: snapshot.val().text,
+    //     index: snapshot.val().index,
+    //     authorId: snapshot.val().userId,
+    //     messageId: uid,
+    //   });
+    // });
   }
 }
 

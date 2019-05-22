@@ -1,23 +1,12 @@
 import React, { Component, Fragment } from 'react';
-import { navigate } from 'gatsby';
 import { compose } from 'recompose';
 import Layout from '../components/layout';
 import { withAuthorization } from '../components/Session';
 import { withFirebase } from '../components/Firebase';
-import * as ROUTES from '../constants/routes';
-import styled from 'styled-components';
-import device from '../constants/devices.js';
 import Message from '../components/Message';
 import CreateMessage from '../components/CreateMessage';
 import ReadMyMessages from '../components/ReadMyMessages';
-import {
-  MessageButton,
-  Button,
-  FlexItem,
-  FlexContainer,
-  MessageText,
-  ButtonText,
-} from './homeStyle.js';
+
 import BottomNav from '../components/BottomNav';
 
 class HomePageBase extends Component {
@@ -26,30 +15,48 @@ class HomePageBase extends Component {
     this.state = { canRender: false };
   }
   componentDidMount() {
-    this.setState({ canRender: true });
+    this.setState({ canRender: true }, () => {});
   }
 
   updateState = (key, value) => {
-    console.log('update state called', key, value);
-    this.setState({ [key]: value }, () => {
-      console.log(this.state, 'home');
-    });
+    this.setState({ [key]: value });
   };
+
+  // async getRandomMessage() {
+  //   this.setState({ showing: 'read' });
+  //   let messageCount = await this.props.firebase.getMessageCount();
+  //   await this.props.firebase.getRandomMessage(
+  //     messageCount,
+  //     value => {
+  //       this.props.firebase.getMessageText(value, this.updateState);
+  //     },
+  //   );
+  //   // await this.setState({ showing: 'justSent' });
+  // }
 
   async getRandomMessage() {
     this.setState({ showing: 'read' });
-    let messageCount = await this.props.firebase.getMessageCount();
+    //  let messageCount = await this.props.firebase.getMessageCount();
     await this.props.firebase.getRandomMessage(
-      messageCount,
-      value => {
-        this.props.firebase.getMessageText(value, this.updateState);
-      },
+      this.updateState,
+      this.props.firebase.auth.O,
     );
+
     // await this.setState({ showing: 'justSent' });
+  }
+  replyToMessage() {
+    this.props.firebase.replyToMessage(
+      this.state.randomMessage.messageId,
+      this.state.randomMessage.authorId,
+      this.props.firebase.auth.O,
+      this.state.randomMessage.text,
+      this.state.reply,
+    );
   }
   render() {
     const { showing } = this.state;
-    console.log(this.state.showing);
+
+
     return (
       <div
         style={{
@@ -59,67 +66,17 @@ class HomePageBase extends Component {
       >
         <div style={{ height: '100%' }}>
           {this.state.randomMessage && (
-            <FlexContainer
-              style={
-                showing !== 'reply'
-                  ? { height: '75%' }
-                  : { height: '90%' }
+            <Message
+              message={this.state.randomMessage}
+              getRandomMessage={() => this.getRandomMessage()}
+              updateState={(key, value) =>
+                this.updateState(key, value)
               }
-              flexDirection={'column'}
-            >
-              <FlexItem
-                flexSize={showing !== 'reply' ? 0.4 : 0.4}
-                style={{ backgroundColor: 'orange' }}
-              >
-                Date
-              </FlexItem>
-              <FlexItem
-                flexSize={3}
-                style={{ backgroundColor: 'lightyellow' }}
-              >
-                <MessageText>
-                  {this.state.randomMessage.text}
-                </MessageText>
-              </FlexItem>
-              <FlexItem
-                flexSize={showing !== 'reply' ? 0.5 : 0.3}
-                style={{ backgroundColor: 'lightblue' }}
-              >
-                <FlexContainer>
-                  <FlexItem>
-                    <MessageButton
-                      onClick={() => {
-                        this.getRandomMessage();
-                      }}
-                    >
-                      {showing !== 'reply' ? 'Pass' : 'Nevermind'}
-                    </MessageButton>
-                  </FlexItem>
-                  <FlexItem>
-                    {showing !== 'reply' ? (
-                      <MessageButton
-                        onClick={() => {
-                          this.getRandomMessage();
-                        }}
-                      >
-                        Trash
-                      </MessageButton>
-                    ) : (
-                      <Fragment />
-                    )}
-                  </FlexItem>
-                  <FlexItem>
-                    <MessageButton
-                      onClick={() => {
-                        this.setState({ showing: 'reply' });
-                      }}
-                    >
-                      Reply
-                    </MessageButton>
-                  </FlexItem>
-                </FlexContainer>
-              </FlexItem>
-            </FlexContainer>
+              showing={this.state.showing}
+              reply={() => this.replyToMessage()}
+              uid={this.props.firebase.auth.O}
+              firebase={this.props.firebase}
+            />
           )}
           {this.state.showing === 'write' && <CreateMessage />}
           {this.state.showing === 'chats' && (
@@ -135,35 +92,13 @@ class HomePageBase extends Component {
             </div>
           )}
         </div>
+
         {showing !== 'reply' && (
-          <div
-            style={{
-              width: '100vw',
-              position: 'fixed',
-              top: '85vh',
-            }}
-            flex={3}
-            backgroundColor="lightyellow"
-          >
-            {/* <div
-              style={{
-                display: 'flex',
-                position: 'absolute',
-                bottom: -100,
-                left: 0,
-                backgroundColor: 'green',
-                width: '100vw',
-              }}
-            > */}
-            <BottomNav
-              showing={this.state.showing}
-              updateState={(key, value) =>
-                this.updateState(key, value)
-              }
-              getRandomMessage={() => this.getRandomMessage()}
-            />
-          </div>
-          // </div>
+          <BottomNav
+            showing={this.state.showing}
+            updateState={(key, value) => this.updateState(key, value)}
+            getRandomMessage={() => this.getRandomMessage()}
+          />
         )}
       </div>
     );

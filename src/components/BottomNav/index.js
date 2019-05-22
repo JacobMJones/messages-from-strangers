@@ -18,7 +18,7 @@ const BottomNav = props => (
       <Button
         style={{
           position: 'relative',
-          bottom: '50px',
+          bottom: '150px',
           height: 200,
         }}
         size={props.showing === 'write' ? 1.2 : 0.9}
@@ -37,7 +37,7 @@ const BottomNav = props => (
       <Button
         style={{
           position: 'relative',
-          bottom: '50px',
+          bottom: '150px',
           height: 200,
         }}
         size={props.showing === 'read' ? 1.2 : 0.9}
@@ -52,7 +52,7 @@ const BottomNav = props => (
       <Button
         style={{
           position: 'relative',
-          bottom: '50px',
+          bottom: '150px',
           height: 200,
         }}
         size={props.showing === 'chats' ? 1.2 : 0.9}

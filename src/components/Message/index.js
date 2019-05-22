@@ -9,46 +9,78 @@ import {
   ButtonText,
 } from '../../pages/homeStyle.js';
 
-const Message = ({
-  showing,
-  message,
-  updateState,
-  getRandomMessage,
-}) => (
+const submitFormHandler = event => {
+  event.preventDefault();
+};
+
+const Message = props => (
   <FlexContainer
     style={
-      showing !== 'reply' ? { height: '75%' } : { height: '90%' }
+      props.showing !== 'reply'
+        ? {
+            height: '75%',
+          }
+        : {
+            height: '90%',
+          }
     }
     flexDirection={'column'}
   >
     <FlexItem
-      flexSize={showing !== 'reply' ? 0.4 : 0.4}
-      style={{ backgroundColor: 'orange' }}
+      flexSize={props.showing !== 'reply' ? 0.4 : 0.4}
+      style={{
+        backgroundColor: 'orange',
+      }}
     >
       Date
     </FlexItem>
-    <FlexItem flexSize={3} style={{ backgroundColor: 'lightyellow' }}>
-      <MessageText>{message}</MessageText>
-    </FlexItem>
     <FlexItem
-      flexSize={showing !== 'reply' ? 0.5 : 0.3}
-      style={{ backgroundColor: 'lightblue' }}
+      flexSize={3}
+      style={{
+        backgroundColor: 'lightyellow',
+      }}
+    >
+      <MessageText>{props.message.text}</MessageText>
+    </FlexItem>
+    {props.showing === 'reply' && (
+      <FlexItem>
+        <input
+          style={{
+            fontSize: '16px',
+            height: '100%',
+            width: '50%',
+            textAlign: 'center',
+          }}
+          type="text"
+          placeholder="..."
+          onChange={e => {
+            props.updateState('reply', e.target.value);
+          }}
+        />
+      </FlexItem>
+    )}
+    <FlexItem
+      flexSize={props.showing !== 'reply' ? 0.5 : 0.3}
+      style={{
+        backgroundColor: 'lightblue',
+      }}
     >
       <FlexContainer>
         <FlexItem>
           <MessageButton
             onClick={() => {
-              getRandomMessage();
+              
+               props.firebase.passMessage(props.message.messageId, props.uid);
             }}
           >
-            {showing !== 'reply' ? 'Pass' : 'Nevermind'}
+            {props.showing !== 'reply' ? 'Pass' : 'Nevermind'}
           </MessageButton>
         </FlexItem>
         <FlexItem>
-          {showing !== 'reply' ? (
+          {props.showing !== 'reply' ? (
             <MessageButton
               onClick={() => {
-                getRandomMessage();
+                props.getRandomMessage();
               }}
             >
               Trash
@@ -59,9 +91,20 @@ const Message = ({
         </FlexItem>
         <FlexItem>
           <MessageButton
-            onClick={() => {
-              updateState({ showing: 'reply' });
-            }}
+            onClick={
+              props.showing !== 'reply'
+                ? () => {
+                
+                    props.updateState('showing', 'reply');
+                  }
+                : () => {
+                    props.reply(
+                      props.message.messageId,
+                      props.message.authorId,
+                      props.uid,
+                    );
+                  }
+            }
           >
             Reply
           </MessageButton>
@@ -70,5 +113,4 @@ const Message = ({
     </FlexItem>
   </FlexContainer>
 );
-
 export default Message;
