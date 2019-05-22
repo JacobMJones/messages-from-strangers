@@ -98,16 +98,6 @@ class Firebase {
 
   // *** Message API ***
 
-  async getMessageCount() {
-    let num = await this.db
-      .ref('messages/messageInfo')
-      .once('value')
-      .then(snapshot => {
-        return snapshot.val().messageCount;
-      });
-    return num;
-  }
-
   message = uid => this.db.ref(`messages/${uid}`);
 
   getMessageText = (mid, index, cb, uid) => {
@@ -171,14 +161,15 @@ class Firebase {
       .child(`passedUsers`)
       .update({ [uid]: uid });
   };
-  
+
   getRandomMessage(cb, uid) {
+    console.log('in get random', cb, uid);
     let done = false;
-    let keyToPass = '';
+let canUse = false;
     this.db
       .ref('messages')
       .orderByChild('createdAt')
-      .limitToFirst(6)
+      .limitToFirst(12)
       .once('value', snapshot => {
         for (let key in snapshot.val()) {
           this.db
@@ -188,8 +179,17 @@ class Firebase {
               if (snapshot.val().userId !== uid && !done) {
                 console.log('key2', key, done);
                 if (snapshot.val().passedUsers) {
+                  canUse = true;
                   for (var userId in snapshot.val().passedUsers) {
-                    if (userId !== uid) {
+                  
+                    if(userId === uid){
+                      canUse = false;
+                    }
+                  
+                  }
+
+                    if (canUse && !done) {
+                      console.log('in top');
                       cb('randomMessage', {
                         text: snapshot.val().text,
                         index: snapshot.val().index,
@@ -197,9 +197,11 @@ class Firebase {
                         messageId: key,
                       });
                       done = true;
+                    
                     }
-                  }
+                  
                 } else if (!done) {
+                  console.log('in bottom');
                   cb('randomMessage', {
                     text: snapshot.val().text,
                     index: snapshot.val().index,

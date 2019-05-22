@@ -68,9 +68,12 @@ const Message = props => (
       <FlexContainer>
         <FlexItem>
           <MessageButton
-            onClick={() => {
-              
-               props.firebase.passMessage(props.message.messageId, props.uid);
+            onClick={async () => {
+              await props.firebase.passMessage(
+                props.message.messageId,
+                props.uid,
+              );
+              props.getRandomMessage();
             }}
           >
             {props.showing !== 'reply' ? 'Pass' : 'Nevermind'}
@@ -94,7 +97,6 @@ const Message = props => (
             onClick={
               props.showing !== 'reply'
                 ? () => {
-                
                     props.updateState('showing', 'reply');
                   }
                 : () => {

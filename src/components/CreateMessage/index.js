@@ -20,7 +20,6 @@ class CreateMessage extends Component {
   firebaseInit = () => {
     if (this.props.firebase && !this._initFirebase) {
       this._initFirebase = true;
-
     }
   };
 
@@ -32,9 +31,8 @@ class CreateMessage extends Component {
     // this.firebaseInit();
   }
 
-
   componentWillUnmount() {
-   // this.props.firebase.messages().off();
+    // this.props.firebase.messages().off();
   }
 
   onChangeText = event => {
@@ -42,20 +40,12 @@ class CreateMessage extends Component {
   };
 
   async onCreateMessage(event, authUser) {
-    let currentCount = await this.props.firebase.db
-      .ref('messages/messageInfo')
-      .once('value')
-      .then(snapshot => {
-        return snapshot.val().messageCount;
-      });
-
     this.props.firebase.messages().push({
-      index: currentCount + 1,
       text: this.state.text,
       userId: authUser.uid,
       createdAt: this.props.firebase.serverValue.TIMESTAMP,
     });
-    this.props.firebase.incrementMessageCount(+1);
+    this.setState({text:''})
     event.preventDefault();
   }
 
@@ -97,7 +87,6 @@ class CreateMessage extends Component {
 
               <button type="submit">Send</button>
             </form>
-
           </div>
         )}
       </AuthUserContext.Consumer>

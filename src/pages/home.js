@@ -22,27 +22,15 @@ class HomePageBase extends Component {
     this.setState({ [key]: value });
   };
 
-  // async getRandomMessage() {
-  //   this.setState({ showing: 'read' });
-  //   let messageCount = await this.props.firebase.getMessageCount();
-  //   await this.props.firebase.getRandomMessage(
-  //     messageCount,
-  //     value => {
-  //       this.props.firebase.getMessageText(value, this.updateState);
-  //     },
-  //   );
-  //   // await this.setState({ showing: 'justSent' });
-  // }
 
   async getRandomMessage() {
     this.setState({ showing: 'read' });
-    //  let messageCount = await this.props.firebase.getMessageCount();
     await this.props.firebase.getRandomMessage(
       this.updateState,
       this.props.firebase.auth.O,
     );
 
-    // await this.setState({ showing: 'justSent' });
+ 
   }
   replyToMessage() {
     this.props.firebase.replyToMessage(

@@ -76,20 +76,12 @@ class ReadMyMessages extends Component {
   };
 
   async onCreateMessage(event, authUser) {
-    let currentCount = await this.props.firebase.db
-      .ref('messages/messagesInfo')
-      .once('value')
-      .then(snapshot => {
-        return snapshot.val().messagesCount;
-      });
-
     this.props.firebase.messages().push({
-      index: currentCount + 1,
       text: this.state.text,
       userId: authUser.uid,
       createdAt: this.props.firebase.serverValue.TIMESTAMP,
     });
-    this.props.firebase.incrementMessageCount(+1);
+
     this.setState({ text: '' });
     event.preventDefault();
   }
@@ -106,7 +98,6 @@ class ReadMyMessages extends Component {
 
   onRemoveMessage = uid => {
     this.props.firebase.message(uid).remove();
-    this.props.firebase.incrementMessageCount(-1);
   };
 
   onGetRandomMessage = () => {
@@ -120,8 +111,6 @@ class ReadMyMessages extends Component {
       <AuthUserContext.Consumer>
         {authUser => (
           <div>
-     
-
             {loading && <div>Loading ...</div>}
 
             {messages && (
@@ -134,7 +123,6 @@ class ReadMyMessages extends Component {
             )}
 
             {!messages && <div>There are no messages ...</div>}
-     
           </div>
         )}
       </AuthUserContext.Consumer>

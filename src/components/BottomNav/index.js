@@ -42,7 +42,7 @@ const BottomNav = props => (
         }}
         size={props.showing === 'read' ? 1.2 : 0.9}
         onClick={() => {
-          props.getRandomMessage();
+          props.getRandomMessage(props.updateState);
         }}
       >
         <ButtonText>Read</ButtonText>
