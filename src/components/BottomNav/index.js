@@ -6,7 +6,7 @@ import {
   FlexContainer,
   MessageText,
   ButtonText,
-} from '../../pages/homeStyle.js';
+} from '../../constants/homeStyle.js';
 
 const BottomNav = props => (
   <FlexContainer
@@ -27,7 +27,7 @@ const BottomNav = props => (
           props.showing !== 'write' &&
             props.updateState('showing', 'write');
           props.updateState('randomMessage', null);
-          //   props.updateState('randomMessage', null);
+      
         }}
       >
         <ButtonText>Write</ButtonText>
@@ -41,7 +41,8 @@ const BottomNav = props => (
           height: 200,
         }}
         size={props.showing === 'read' ? 1.2 : 0.9}
-        onClick={() => {
+        onClick={async () => {
+         await props.updateState('randomMessage', null);
           props.getRandomMessage(props.updateState);
         }}
       >

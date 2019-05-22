@@ -12,7 +12,7 @@ import BottomNav from '../components/BottomNav';
 class HomePageBase extends Component {
   constructor(props) {
     super(props);
-    this.state = { canRender: false };
+    this.state = { canRender: false, showing: 'home' };
   }
   componentDidMount() {
     this.setState({ canRender: true }, () => {});
@@ -22,15 +22,12 @@ class HomePageBase extends Component {
     this.setState({ [key]: value });
   };
 
-
   async getRandomMessage() {
     this.setState({ showing: 'read' });
     await this.props.firebase.getRandomMessage(
       this.updateState,
       this.props.firebase.auth.O,
     );
-
- 
   }
   replyToMessage() {
     this.props.firebase.replyToMessage(
@@ -43,8 +40,7 @@ class HomePageBase extends Component {
   }
   render() {
     const { showing } = this.state;
-
-
+    console.log(this.state);
     return (
       <div
         style={{
@@ -53,6 +49,18 @@ class HomePageBase extends Component {
         }}
       >
         <div style={{ height: '100%' }}>
+          {showing === 'home' && (
+            <div
+              style={{
+                textAlign: 'center',
+              padding:'25vh',
+                fontSize: 40,
+                fontFamily:'Raleway'
+              }}
+            >
+              What will it be?
+            </div>
+          )}
           {this.state.randomMessage && (
             <Message
               message={this.state.randomMessage}

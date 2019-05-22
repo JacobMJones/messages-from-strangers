@@ -30,7 +30,7 @@ class Layout extends Component {
 
 const AppWithAuthentication = withAuthentication(({ children }) => (
   <Fragment >
-    {children}
+    <div style={{overflow:'hidden'}}>{children}</div>
 
   </Fragment>
 ));

@@ -1,9 +1,9 @@
-import React, { Component, Fragment } from 'react';
+import React, { Component } from 'react';
 
 import styled from 'styled-components';
-import device from '../constants/devices.js';
+import device from './devices.js';
 
-export const MessageButton = styled.div`
+const MessageButton = styled.div`
   border-radius: 2px;
   background-color: white;
   border: solid 1px;
@@ -19,7 +19,7 @@ export const MessageButton = styled.div`
   display: inline-block;
 `;
 
-export const Button = styled.div`
+const Button = styled.div`
   @media ${device.mobile} {
     height: 100px;
     width: 100px;
@@ -48,11 +48,11 @@ export const Button = styled.div`
   }
 `;
 
-export const FlexItem = styled.div`
+const FlexItem = styled.div`
   flex: ${props => (props.flexSize ? props.flexSize : 1)};
   text-align: center;
 `;
-export const FlexContainer = styled.div`
+const FlexContainer = styled.div`
   height: 100%;
   transition: all 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275);
   display: flex;
@@ -60,10 +60,19 @@ export const FlexContainer = styled.div`
   flex-direction: ${props =>
     props.flexDirection ? props.flexDirection : 'row'};
 `;
-export const ButtonText = styled.div``;
+const ButtonText = styled.div``;
 
-export const MessageText = styled.div`
+const MessageText = styled.div`
   font-family: 'Raleway';
   text-align: center;
   font-size: 2rem;
 `;
+
+export {
+  ButtonText,
+  MessageText,
+  FlexContainer,
+  FlexItem,
+  Button,
+  MessageButton,
+};

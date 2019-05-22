@@ -7,7 +7,7 @@ import {
   FlexContainer,
   MessageText,
   ButtonText,
-} from '../../pages/homeStyle.js';
+} from '../../constants/homeStyle.js';
 
 const submitFormHandler = event => {
   event.preventDefault();
